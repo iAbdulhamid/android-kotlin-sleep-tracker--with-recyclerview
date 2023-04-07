@@ -7,35 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.trackmysleepquality.R
 import com.example.android.trackmysleepquality.convertDurationToFormatted
 import com.example.android.trackmysleepquality.convertNumericQualityToString
 import com.example.android.trackmysleepquality.database.SleepNight
 
-class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.SleepNightViewHolder>()
+class SleepNightAdapter: ListAdapter<SleepNight, SleepNightAdapter.SleepNightViewHolder>(SleepNightDiffCallback())
 {
-    var data = listOf<SleepNight>()
 
-        @SuppressLint("NotifyDataSetChanged")
-        set(value){
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun getItemCount() = data.size
 
     override fun onBindViewHolder(holder: SleepNightViewHolder, position: Int) {
-        val item = data[position]
-
-        /*if (item.sleepQuality <= 1) {
-            holder.textView.setTextColor(Color.RED)
-        } else {
-            holder.textView.setTextColor(Color.BLACK)
-        }*/
-
+        val item = getItem(position)
         holder.bind(item)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SleepNightViewHolder {
@@ -75,6 +61,16 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.SleepNightViewHo
                 val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
                 return SleepNightViewHolder(view)
             }
+        }
+    }
+
+    class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
+        override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+            return oldItem.nightId == newItem.nightId
+        }
+
+        override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+            return oldItem == newItem
         }
     }
 }
