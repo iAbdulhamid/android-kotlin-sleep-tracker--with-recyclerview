@@ -39,15 +39,12 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.SleepNightViewHo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SleepNightViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
-        return SleepNightViewHolder(view)
+        return SleepNightViewHolder.from(parent)
     }
 
 
-
     // inner class
-    class SleepNightViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SleepNightViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val sleepLength: TextView = itemView.findViewById(R.id.txt_sleep_length)
         val sleepQuality: TextView = itemView.findViewById(R.id.txt_sleep_quality)
         val sleepImage: ImageView = itemView.findViewById(R.id.img_sleep)
@@ -70,6 +67,14 @@ class SleepNightAdapter: RecyclerView.Adapter<SleepNightAdapter.SleepNightViewHo
                     else -> R.drawable.ic_sleep_active
                 }
             )
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): SleepNightViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.list_item_sleep_night, parent, false)
+                return SleepNightViewHolder(view)
+            }
         }
     }
 }
