@@ -21,7 +21,7 @@ class SleepNightAdapter (val clickListener: SleepNightListener) : ListAdapter<Sl
     }
 
 
-    // inner classes
+    // inner class
     class SleepNightViewHolder private constructor(val binding: ListItemSleepNightBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: SleepNight, clickListener: SleepNightListener) {
@@ -42,17 +42,19 @@ class SleepNightAdapter (val clickListener: SleepNightListener) : ListAdapter<Sl
         }
     }
 
-    class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
-        override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
-            return oldItem.nightId == newItem.nightId
-        }
 
-        override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
-            return oldItem == newItem
-        }
+}
+
+class SleepNightDiffCallback : DiffUtil.ItemCallback<SleepNight>() {
+    override fun areItemsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return oldItem.nightId == newItem.nightId
     }
 
-    class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
-        fun onClick(night: SleepNight) = clickListener(night.nightId)
+    override fun areContentsTheSame(oldItem: SleepNight, newItem: SleepNight): Boolean {
+        return oldItem == newItem
     }
+}
+
+class SleepNightListener(val clickListener: (sleepId: Long) -> Unit) {
+    fun onClick(night: SleepNight) = clickListener(night.nightId)
 }

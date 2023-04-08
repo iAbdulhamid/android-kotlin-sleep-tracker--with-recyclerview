@@ -67,8 +67,9 @@ class SleepTrackerFragment : Fragment() {
         val manager = GridLayoutManager(activity, 3)
         binding.sleepList.layoutManager = manager
 
-        val adapter = SleepNightAdapter( SleepNightAdapter.SleepNightListener { nightId ->
-            Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
+        val adapter = SleepNightAdapter( SleepNightListener { nightId ->
+            //Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
+            sleepTrackerViewModel.onSleepNightClicked(nightId)
         })
         binding.sleepList.adapter = adapter
         sleepTrackerViewModel.nights.observe(viewLifecycleOwner, Observer {
@@ -77,6 +78,12 @@ class SleepTrackerFragment : Fragment() {
             }
         })
 
+        sleepTrackerViewModel.navigateToSleepDataQuality.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(it))
+                sleepTrackerViewModel.onSleepDataQualityNavigated()
+            }
+        })
 
         // Add an Observer on the state variable for showing a Snackbar message
         // when the CLEAR button is pressed.
